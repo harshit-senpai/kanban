@@ -4,6 +4,8 @@ import { auth } from "@clerk/nextjs/server";
 import { InputType, ReturnType } from "./type";
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { createSafeAction } from "@/lib/createSafeAction";
+import { CreateBoardSchema } from "./schema";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { userId } = auth();
@@ -32,3 +34,6 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   revalidatePath(`/board/${board.id}`);
   return { data: board };
 };
+
+export const createBoard = createSafeAction(CreateBoardSchema, handler);
+// this creteBoard is a going to return a promise which after resolving gives the title of the board
