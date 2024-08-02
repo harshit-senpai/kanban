@@ -1,15 +1,20 @@
 import { createBoard } from "@/actions/createBoard";
 import { Button } from "@/components/ui/button";
+import { db } from "@/lib/db";
+import { Board } from "./Board";
+import { Form } from "./Form";
 
-const OrganizationIdPage = () => {
+const OrganizationIdPage = async () => {
+  const boards = await db.board.findMany();
+
   return (
-    <div>
-      <form action={createBoard}>
-        <input id="title" name="title" required placeholder="Enter a board title" className="border-black border p-1" />
-        <Button type="submit">
-          Submit
-        </Button>
-      </form>
+    <div className="flex flex-col space-y-4">
+      <Form />
+      <div className="space-y-2">
+        {boards.map((board) => (
+          <Board key={board.id} id={board.id} title={board.title} />
+        ))}
+      </div>
     </div>
   );
 };
