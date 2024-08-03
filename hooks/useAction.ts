@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState, useCallback } from "react";
 
@@ -37,9 +37,7 @@ export const useAction = <TInput, TOutput>(
           return;
         }
 
-        if (result.fieldErrors) {
-          setFieldErrors(result.fieldErrors);
-        }
+        setFieldErrors(result.fieldErrors);
 
         if (result.error) {
           setError(result.error);
@@ -66,4 +64,4 @@ export const useAction = <TInput, TOutput>(
   };
 };
 
-// using this hook we have replicated the working of useMutation of react query 
+// using this hook we have replicated the working of useMutation of react query
