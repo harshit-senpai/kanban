@@ -12,6 +12,9 @@ import { Button } from "@/components/ui/button";
 
 import { FormInput } from "./formInput";
 import { FormSubmit } from "./formSubmit";
+import { useAction } from "@/hooks/useAction";
+import { createBoard } from "@/actions/createBoard";
+import { exec } from "child_process";
 
 interface FormPopoverProps {
   children: React.ReactNode;
@@ -26,6 +29,21 @@ export const FormPopover = ({
   align,
   sideOffset = 0,
 }: FormPopoverProps) => {
+  const { execute, fieldErrors } = useAction(createBoard, {
+    onSuccess: (data) => {
+      console.log(data);
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
+  const onSubmit = (formData: FormData) => {
+    const title = formData.get("title") as string;
+
+    execute({ title });
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
@@ -46,9 +64,15 @@ export const FormPopover = ({
             <X className="h-4 w-4" />
           </Button>
         </PopoverClose>
-        <form className="space-y-4">
+        <form action={onSubmit} className="space-y-4">
           <div className="space-y-4">
-            <FormInput id="title" label="Board title" type="text" />
+            <FormInput
+              id="title"
+              label="Board title"
+              type="text"
+              // @ts-ignore
+              errors={fieldErrors}
+            />
           </div>
           <FormSubmit className="w-full">Create</FormSubmit>
         </form>
