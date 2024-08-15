@@ -14,15 +14,25 @@ datasource db {
 }
 
 model Board {
-  id            String @id @default(uuid())
+  id            String   @id @default(uuid())
   orgId         String
   title         String
   imageId       String
-  imageThumbUrl String @db.Text
-  imageFullUrl  String @db.Text
-  imageUserName String @db.Text
-  imageLinkHTML String @db.Text
+  imageThumbUrl String   @db.Text
+  imageFullUrl  String   @db.Text
+  imageUserName String   @db.Text
+  imageLinkHTML String   @db.Text
+  lists         List[]
+  createdAt     DateTime @default(now())
+  updaedAt      DateTime @updatedAt
+}
 
-  createdAt DateTime @default(now())
-  updaedAt  DateTime @updatedAt
+model List {
+  id      String @id @default(uuid())
+  title   String
+  order   Int
+  boardId String
+  board   Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  @@index([boardId])
 }
