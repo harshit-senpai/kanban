@@ -4,6 +4,8 @@ import { auth } from "@clerk/nextjs/server";
 
 import { db } from "@/lib/db";
 
+import { BoardNavbar } from "../_components/boardNavbar";
+
 export async function generateMetaData({
   params,
 }: {
@@ -58,6 +60,7 @@ const BoardIdLayout = async ({
       className="relative min-h-screen bg-no-repeat bg-cover bg-center"
       style={{ backgroundImage: `url(${board.imageFullUrl})` }}
     >
+      <BoardNavbar data={board} />
       <main className="relative pt-28 h-full">{children}</main>
     </div>
   );
