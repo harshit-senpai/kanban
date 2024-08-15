@@ -1,3 +1,5 @@
+"use server"
+
 import { redirect } from "next/navigation";
 
 import { auth } from "@clerk/nextjs/server";
@@ -38,4 +40,4 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   redirect(`/organization/${orgId}`);
 };
 
-export const deleteCount = createSafeAction(DeleteBoard, handler);
+export const deleteBoard = createSafeAction(DeleteBoard, handler);
