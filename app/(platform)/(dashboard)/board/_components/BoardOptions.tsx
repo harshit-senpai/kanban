@@ -12,6 +12,7 @@ import {
 
 import { useAction } from "@/hooks/useAction";
 import { deleteBoard } from "@/actions/deleteBoard";
+import { toast } from "sonner";
 
 interface BoardOptionsProps {
   id: string;
@@ -20,7 +21,7 @@ interface BoardOptionsProps {
 export const BoardOptions = ({ id }: BoardOptionsProps) => {
   const { execute, isLoading } = useAction(deleteBoard, {
     onError: (error) => {
-      console.log(error);
+      toast.error(error);
     },
   });
 
