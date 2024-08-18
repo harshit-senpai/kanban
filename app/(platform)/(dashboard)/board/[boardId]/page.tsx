@@ -4,6 +4,8 @@ import { auth } from "@clerk/nextjs/server";
 
 import { db } from "@/lib/db";
 
+import { ListContainer } from "../_components/ListContainer";
+
 interface BoardIdPageProps {
   params: {
     boardId: string;
