@@ -3,6 +3,7 @@
 import { ElementRef, useRef, useState } from "react";
 
 import { useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { Plus, X } from "lucide-react";
 
@@ -10,12 +11,17 @@ import { useEventListener, useOnClickOutside } from "usehooks-ts";
 
 import { Button } from "@/components/ui/button";
 
+import { useAction } from "@/hooks/useAction";
+
 import { ListWrapper } from "./ListWrapper";
 import { FormInput } from "@/components/form/formInput";
 import { FormSubmit } from "@/components/form/formSubmit";
+import { toast } from "sonner";
+import { createList } from "@/actions/createList";
 
 export const ListForm = () => {
   const params = useParams();
+  const router = useRouter();
 
   const formRef = useRef<ElementRef<"form">>(null);
   const inputRef = useRef<ElementRef<"input">>(null);
@@ -33,6 +39,17 @@ export const ListForm = () => {
     setIsEditing(false);
   };
 
+  const { execute, fieldErrors } = useAction(createList, {
+    onSuccess: (data) => {
+      toast.success(`List "${data.title}" created!`);
+      disableEditing();
+      router.refresh();
+    },
+    onError: (error) => {
+      toast.error(error);
+    },
+  });
+
   const onKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Escape") {
       disableEditing();
@@ -42,14 +59,24 @@ export const ListForm = () => {
   useEventListener("keydown", onKeyDown);
   useOnClickOutside(formRef, disableEditing);
 
+  const onSubmit = (formData: FormData) => {
+    const title = formData.get("title") as string;
+    const boardId = formData.get("boardId") as string;
+
+    execute({ title, boardId });
+  };
+
   if (isEditing) {
     return (
       <ListWrapper>
         <form
+          action={onSubmit}
           ref={formRef}
           className="w-full p-3 bg-white space-y-4 shadow-md rounded-md"
         >
           <FormInput
+            //   @ts-ignore
+            errors={fieldErrors}
             ref={inputRef}
             id="title"
             className="text-sm px-2 py-1 h-7 font-semibold border-transparent hover:border-input focus:border-input transition"
