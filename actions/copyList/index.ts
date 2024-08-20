@@ -1,3 +1,5 @@
+"use server";
+
 import { revalidatePath } from "next/cache";
 
 import { db } from "@/lib/db";
@@ -84,4 +86,4 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   return { data: list };
 };
 
-const copyList = createSafeAction(CopyList, handler);
+export const copyList = createSafeAction(CopyList, handler);
