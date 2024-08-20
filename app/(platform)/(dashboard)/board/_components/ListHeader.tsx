@@ -10,6 +10,7 @@ import { updateList } from "@/actions/updateList";
 import { FormInput } from "@/components/form/formInput";
 import { useAction } from "@/hooks/useAction";
 import { useEventListener, useOnClickOutside } from "usehooks-ts";
+import { ListOptions } from "./ListOptions";
 
 interface ListHeaderProps {
   data: List;
@@ -97,6 +98,7 @@ export const ListHeader = ({ data }: ListHeaderProps) => {
           {title}
         </div>
       )}
+      <ListOptions data={data} onAddCard={() => {}} />
     </div>
   );
 };
