@@ -2,11 +2,14 @@
 
 import React, { forwardRef, KeyboardEventHandler } from "react";
 
+import { useFormStatus } from "react-dom";
+
+import { cn } from "@/lib/utils";
+
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
-import { cn } from "@/lib/utils";
+
 import { FormErrors } from "./formErrors";
-import { useFormStatus } from "react-dom";
 
 interface FormTextareaProps {
   id: string;
@@ -17,7 +20,7 @@ interface FormTextareaProps {
   errors?: Record<string, string[] | undefined>;
   className?: string;
   onBlur?: () => void;
-  onClick: () => void;
+  onClick?: () => void;
   onKeyDown?: KeyboardEventHandler<HTMLTextAreaElement> | undefined;
   defaultValue?: string;
 }
