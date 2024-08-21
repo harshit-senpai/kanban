@@ -14,6 +14,7 @@ import { ListItem } from "./ListItem";
 import { useAction } from "@/hooks/useAction";
 
 import { updateListOrder } from "@/actions/updateListOrder";
+import { updateCardOrder } from "@/actions/updateCardOrder";
 
 interface ListContainerProps {
   boardId: string;
@@ -35,6 +36,15 @@ export const ListContainer = ({ boardId, data }: ListContainerProps) => {
   const { execute: executeUpdateListOrder } = useAction(updateListOrder, {
     onSuccess: () => {
       toast.success("List reordered successfully");
+    },
+    onError: (error) => {
+      toast.error(error);
+    },
+  });
+
+  const { execute: executeUpdateCardOrder } = useAction(updateCardOrder, {
+    onSuccess: () => {
+      toast.success("Card reordered successfully");
     },
     onError: (error) => {
       toast.error(error);
@@ -69,7 +79,7 @@ export const ListContainer = ({ boardId, data }: ListContainerProps) => {
       );
 
       setOrderedData(items);
-      executeUpdateListOrder({ items, boardId })
+      executeUpdateListOrder({ items, boardId });
     }
 
     // if user moves a card
@@ -115,7 +125,10 @@ export const ListContainer = ({ boardId, data }: ListContainerProps) => {
         sourceList.cards = reorderCards;
 
         setOrderedData(newOrderedData);
-        // TODO: Trigger server action
+        executeUpdateCardOrder({
+          boardId: boardId,
+          items: reorderCards,
+        });
       } else {
         // moving the card to another list
         // remove card form the source list
@@ -139,7 +152,10 @@ export const ListContainer = ({ boardId, data }: ListContainerProps) => {
         });
 
         setOrderedData(newOrderedData);
-        // TODO: trigger server action
+        executeUpdateCardOrder({
+          boardId: boardId,
+          items: destinationList.cards,
+        });
       }
     }
   };
