@@ -1,5 +1,6 @@
+import { ModalProvider } from "@/components/providers/modalProvider";
 import { ClerkProvider } from "@clerk/nextjs";
-import { Toaster } from "sonner"
+import { Toaster } from "sonner";
 
 const PlatformLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -13,7 +14,8 @@ const PlatformLayout = ({ children }: { children: React.ReactNode }) => {
         },
       }}
     >
-      <Toaster/>
+      <Toaster />
+      <ModalProvider />
       {children}
     </ClerkProvider>
   );
