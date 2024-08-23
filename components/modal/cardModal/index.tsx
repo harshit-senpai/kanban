@@ -1,10 +1,15 @@
 "use client";
 
-import { useCardModal } from "@/hooks/useCardModal";
-import { Dialog, DialogContent } from "../ui/dialog";
 import { useQuery } from "@tanstack/react-query";
+
+import { Dialog, DialogContent } from "../../ui/dialog";
+
 import { CardWithList } from "@/types";
+
+import { useCardModal } from "@/hooks/useCardModal";
 import { fetcher } from "@/lib/fetcher";
+
+import { Header } from "./cardHeader";
 
 export const CardModal = () => {
   const id = useCardModal((state) => state.id);
@@ -18,7 +23,9 @@ export const CardModal = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>{cardData?.title}</DialogContent>
+      <DialogContent>
+        {!cardData ? <Header.Skeleton /> : <Header data={cardData} />}
+      </DialogContent>
     </Dialog>
   );
 };
