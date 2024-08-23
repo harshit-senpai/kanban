@@ -8,10 +8,16 @@ import { Layout } from "lucide-react";
 
 import { useQueryClient } from "@tanstack/react-query";
 
+import { toast } from "sonner";
+
 import { CardWithList } from "@/types";
 
 import { FormInput } from "@/components/form/formInput";
 import { Skeleton } from "@/components/ui/skeleton";
+
+import { useAction } from "@/hooks/useAction";
+
+import { updateCard } from "@/actions/updateCard";
 
 interface HeaderProps {
   data: CardWithList;
@@ -22,6 +28,20 @@ export const Header = ({ data }: HeaderProps) => {
   const queryClient = useQueryClient();
   const params = useParams();
 
+  const { execute } = useAction(updateCard, {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["card", data.id],
+      });
+
+      toast.success(`Renamed card to "${data.title}"`);
+      setTitle(data.title);
+    },
+    onError: (error) => {
+      toast.error(error);
+    },
+  });
+
   const inputRef = useRef<ElementRef<"input">>(null);
 
   const onblur = () => {
@@ -30,7 +50,17 @@ export const Header = ({ data }: HeaderProps) => {
 
   const onSubmit = (formData: FormData) => {
     const title = formData.get("title") as string;
-    console.log(title);
+    const boardId = params.boardId as string;
+
+    if (title === data.title) {
+      return;
+    }
+
+    execute({
+      title,
+      boardId,
+      id: data.id,
+    });
   };
 
   return (
