@@ -16,6 +16,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { FormTextarea } from "@/components/form/FormTextarea";
 import { FormSubmit } from "@/components/form/formSubmit";
 import { Button } from "@/components/ui/button";
+import { useAction } from "@/hooks/useAction";
+import { updateCard } from "@/actions/updateCard";
+import { toast } from "sonner";
 
 interface CardDescriptionProps {
   data: CardWithList;
@@ -48,6 +51,19 @@ export const CardDescription = ({ data }: CardDescriptionProps) => {
     }
   };
 
+  const { execute, fieldErrors } = useAction(updateCard, {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["card", data.id],
+      });
+      toast.success(`Card "${data.title}" updated successfully`);
+      disableEditing();
+    },
+    onError: (error) => {
+      toast.error(error);
+    },
+  });
+
   useEventListener("keydown", onKeyDown);
   useOnClickOutside(formRef, disableEditing);
 
@@ -55,6 +71,12 @@ export const CardDescription = ({ data }: CardDescriptionProps) => {
     const description = formData.get("description") as string;
 
     const boardId = params.boardId as string;
+
+    execute({
+      id: data.id,
+      description,
+      boardId,
+    });
   };
 
   return (
@@ -63,12 +85,15 @@ export const CardDescription = ({ data }: CardDescriptionProps) => {
       <div className="w-full">
         <p className="font-semibold text-neutral-700 mb-2">Description</p>
         {isEditing ? (
-          <form ref={formRef} className="space-y-2">
+          <form ref={formRef} action={onSubmit} className="space-y-2">
             <FormTextarea
               id="description"
               className="w-full mt-2"
               placeholder="Add a more detailed description..."
+              ref={textareaRef}
               defaultValue={data.description || undefined}
+              //   @ts-ignore
+              errors={fieldErrors}
             />
             <div className="flex items-center gap-x-2">
               <FormSubmit>Save</FormSubmit>
@@ -85,6 +110,7 @@ export const CardDescription = ({ data }: CardDescriptionProps) => {
         ) : (
           <div
             role="button"
+            onClick={enableEditing}
             className="min-h-[78px] bg-neutral-200 text-sm font-semibold py-3 px-3.5 rounded-md"
           >
             {data.description || "Add a more detailed description..."}

@@ -26,7 +26,7 @@ export const CardModal = () => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         {!cardData ? <Header.Skeleton /> : <Header data={cardData} />}
-        <div className="gird gird-cols-1 md:grid-cols-4 md:gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 md:gap-4">
           <div className="col-span-2">
             <div className="w-full space-y-6">
               {!cardData ? (
