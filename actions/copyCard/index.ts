@@ -1,3 +1,4 @@
+"use server";
 import { revalidatePath } from "next/cache";
 
 import { auth } from "@clerk/nextjs/server";
@@ -65,4 +66,4 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   return { data: card };
 };
 
-const copyCard = createSafeAction(CopyCard, handler);
+export const copyCard = createSafeAction(CopyCard, handler);
