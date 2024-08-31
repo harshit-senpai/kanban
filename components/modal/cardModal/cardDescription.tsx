@@ -92,7 +92,6 @@ export const CardDescription = ({ data }: CardDescriptionProps) => {
               placeholder="Add a more detailed description..."
               ref={textareaRef}
               defaultValue={data.description || undefined}
-              //   @ts-ignore
               errors={fieldErrors}
             />
             <div className="flex items-center gap-x-2">

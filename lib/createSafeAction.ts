@@ -21,7 +21,7 @@ import { z } from "zod";
 
 // generic errors that we can get from zod validation
 export type FieldErrors<T> = {
-  [K in keyof T]?: string;
+  [K in keyof T]?: string[] | undefined;
 };
 
 export type ActionState<TInput, TOutput> = {

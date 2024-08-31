@@ -20,6 +20,7 @@ import { createBoard } from "@/actions/createBoard";
 import { toast } from "sonner";
 import { FormPicker } from "./formPicker";
 import { useRouter } from "next/navigation";
+import { FieldErrors } from "@/lib/createSafeAction";
 
 
 interface FormPopoverProps {
@@ -51,6 +52,8 @@ export const FormPopover = ({
     },
   });
 
+  const errors: FieldErrors<{ title: string; image: string }> = fieldErrors || {}
+
   const onSubmit = (formData: FormData) => {
     const title = formData.get("title") as string;
     const image = formData.get("image") as string;
@@ -80,13 +83,11 @@ export const FormPopover = ({
         </PopoverClose>
         <form action={onSubmit} className="space-y-4">
           <div className="space-y-4">
-            {/* @ts-ignore */}
-            <FormPicker id="image" errors={fieldErrors} />
+            <FormPicker id="image" errors={errors} />
             <FormInput
               id="title"
               label="Board title"
               type="text"
-              // @ts-ignore
               errors={fieldErrors}
             />
           </div>

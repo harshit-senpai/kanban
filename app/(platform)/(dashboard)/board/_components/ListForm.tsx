@@ -75,7 +75,6 @@ export const ListForm = () => {
           className="w-full p-3 bg-white space-y-4 shadow-md rounded-md"
         >
           <FormInput
-            //   @ts-ignore
             errors={fieldErrors}
             ref={inputRef}
             id="title"

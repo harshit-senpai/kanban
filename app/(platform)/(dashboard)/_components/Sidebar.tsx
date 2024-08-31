@@ -88,7 +88,6 @@ export const Sidebar = ({ storageKey = "t-sidebar-state" }: SidebarProps) => {
         {userMemberships.data.map(({ organization }) => (
           <NavItem
             key={organization.id}
-            //@ts-ignore
             isActive={activeOrganization?.id === organization.id}
             isExpanded={expanded[organization.id]}
             organization={organization as Organization}
